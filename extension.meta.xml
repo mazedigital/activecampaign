@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="activecampaign" status="beta" xmlns="http://getsymphony.com/schemas/extension/1.0">
+	<name>Active Campaign</name>
+	<description>Active Campaign extension for Symphony</description>
+	<repo type="github">https://github.com/mazedigital/active_campaign</repo>
+	<url type="discuss" />
+	<types>
+		<type>Workflow</type>
+	</types>
+	<authors>
+		<author>
+			<name github="jonmifsud" symphony="gunglien">Jon Mifsud</name>
+			<website>http://maze.digital</website>
+		</author>
+	</authors>
+	<releases>
+		<release version="0.1.0" date="2016-09-15" min="2.6.x">
+			- First Release
+			- Save Contact via custom event
+			- Add/Update Contact via event filter (for existing functions)
+		</release>
+	</releases>
+</extension>

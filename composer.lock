@@ -1,0 +1,61 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "46822c38cf8900ce372a6af397986bdd",
+    "content-hash": "293e648d2e8384cf55aa2e4c53575287",
+    "packages": [
+        {
+            "name": "activecampaign/api-php",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ActiveCampaign/activecampaign-api-php.git",
+                "reference": "ee2a93c141292e7d56ed11ff6b682f7406bd2545"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ActiveCampaign/activecampaign-api-php/zipball/ee2a93c141292e7d56ed11ff6b682f7406bd2545",
+                "reference": "ee2a93c141292e7d56ed11ff6b682f7406bd2545",
+                "shasum": ""
+            },
+            "require": {
+                "lib-curl": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "includes/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Official PHP wrapper for the ActiveCampaign API.",
+            "homepage": "https://github.com/ActiveCampaign/activecampaign-api-php",
+            "keywords": [
+                "Forms",
+                "activecampaign",
+                "automation",
+                "email-marketing",
+                "emails",
+                "marketing-automation",
+                "newsletter",
+                "subscribe"
+            ],
+            "time": "2014-05-27 00:00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

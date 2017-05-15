@@ -2,7 +2,7 @@
 
 class eventactivecampaign extends Event
 {
-    public $ROOTELEMENT = 'activecampaign';
+    public $ROOTELEMENT = 'activecampaign-subscribe';
 
     public $eParamFILTERS = array(
         // 'etm-get-in-touch'
@@ -86,6 +86,8 @@ class eventactivecampaign extends Event
 
     private function __subscribe(){
 
+        $result = new XMLElement($this->ROOTELEMENT);
+
         $activeCampaign = ExtensionManager::getInstance('activecampaign');
         $ac = $activeCampaign->getActiveCampaign();
 
@@ -104,20 +106,27 @@ class eventactivecampaign extends Event
         $apiResult = $ac->api("contact/add", $fields);
 
         if ($apiResult->success == 1){
-            return new XMLElement(
-                            'activecampaign-subscribe',
-                            null,
-                            array(
-                                'result'=>'success',
-                                'subscriber_id'=>$apiResult->subscriber_id
-                            )
-                        );
+            $result->setAttribute('result', 'success');
+            $result->setAttribute('subscriber_id', $apiResult->subscriber_id);
         } else if ( $apiResult->success == 0 ){
-            var_dump($apiResult[0]);die;
+            if ($apiResult->{0}->email == $fields["email"]){
+                // this user already exists
+                $result->setAttribute('result', 'error');
+                $result->appendChild(
+                    new XMLElement('message', __('User is already subscribed.'))
+                );
+            } else {
+
+                $result->setAttribute('result', 'error');
+                $result->appendChild(
+                    new XMLElement('message', __('ActiveCampaign encountered an error when processing.'))
+                );
+                // var_dump($apiResult->{0});die;
+                // $ac->dbg($apiResult);
+            }
         }
 
-        $ac->dbg($apiResult);
-        die;
+        return $result;
 
     }
 

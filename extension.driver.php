@@ -12,7 +12,6 @@
 		private $messages = array();
 
 		public function __construct() {
-			// die('construct');
 			$this->apiKey = Symphony::Configuration()->get('api-key','activecampaign');
 			$this->apiURL = Symphony::Configuration()->get('url','activecampaign');
 			$this->datasources = Symphony::Configuration()->get('datasources','activecampaign');
@@ -40,7 +39,7 @@
 		/**
 		 * Update
 		 */
-		public function update() {
+		public function update($previousVersion = false) {
 			$this->install();
 		}
 
@@ -116,6 +115,7 @@
 		public function eventPostSaveFilter($context){
 
 			if (in_array('activecampaign-add-contact', $context['event']->eParamFILTERS)) {
+
 				// now generate the data from xPATH 
 				$xml = $this->getPostDetailsXML($context['entry'],$context['event']->ROOTELEMENT . '-add-contact.xsl');
 
@@ -286,10 +286,10 @@
 
 			if (!empty($this->datasources)){
 				$datasources = explode(',',$this->datasources);
+				$paramPool = array();
 				foreach ($datasources as $dsName) {
-					$ds = DatasourceManager::create($dsName, $params);
-					$arr = array();
-					$dsXml = $ds->execute($arr); 
+					$ds = DatasourceManager::create($dsName, array('param'=>$params,'env'=> array('pool'=>$paramPool)));
+					$dsXml = $ds->execute($paramPool);
 					$xml->appendChild($dsXml);
 				}
 			}

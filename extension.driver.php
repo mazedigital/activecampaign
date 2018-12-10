@@ -110,6 +110,12 @@
 				in_array('activecampaign-add-deal', $selected),
 				__('Active Campaign Add Deal')
 			);
+			// Add Tag
+			$context['options'][] = array(
+				'activecampaign-add-tag',
+				in_array('activecampaign-add-tag', $selected),
+				__('Active Campaign Add Deal')
+			);
 		}
 
 		public function eventPostSaveFilter($context){
@@ -146,6 +152,58 @@
 
 					$context['messages'][] = Array('activecampaign-add-contact' , true, null,
 							array('method'=>'add')
+						);
+
+				} elseif ( $apiResult->success == 0 && isset($apiResult->{'0'}->id) ){
+
+					$fields['id'] = $apiResult->{'0'}->id;
+
+					$apiResult = $ac->api("contact/edit", $fields);
+					if ($apiResult->success == 1){
+
+						$context['messages'][] = Array('activecampaign-add-contact' , true, null,
+							array('method'=>'update')
+						);
+					} else {
+
+						$context['errors'][] = Array('activecampaign-add-contact' , false, null,
+							array('method'=>'failed')
+						);
+					}
+				}
+			}
+			if (in_array('activecampaign-add-tag', $context['event']->eParamFILTERS)) {
+
+				// now generate the data from xPATH 
+				$xml = $this->getPostDetailsXML($context['entry'],$context['event']->ROOTELEMENT . '-add-tag.xsl');
+
+				$children = $xml->getChildren();
+				$fields = array();
+				foreach ($children as $key => $value) {
+					if (strlen($value->getValue()) > 0){
+						//only keep in array if not empty
+						$fields[$value->getName()] = $value->getValue();
+					} elseif (is_object($value->getChildren()[0])){
+						foreach ($value->getChildren() as $index => $node) {
+							if ($node->getName() == 'item'){
+								$fields[$value->getName()][$node->getAttribute('name')] = $node->getValue();
+							} else {
+								$fields[$value->getName()][$node->getName()] = $value->getValue();
+							}
+						}
+					}	
+				}
+
+				// here is where we get to submit the stuff
+
+				$ac = $this->getActiveCampaign();
+				$apiResult = $ac->api("contact/tag_add", $fields);
+
+				//if contact exists update
+				if ($apiResult->success == 1){
+
+					$context['messages'][] = Array('activecampaign-add-tag' , true, null,
+							array('method'=>'tag')
 						);
 
 				} elseif ( $apiResult->success == 0 && isset($apiResult->{'0'}->id) ){
